@@ -105,7 +105,7 @@ export default function StoreFrontend({ slug }: { slug: string }) {
         if (storeData) {
             filterBundles(storeData.bundles, selectedNetwork, activeCategory);
         }
-        
+        console.log(storeData)  
        
 
     }, [selectedNetwork, activeCategory, storeData]);
@@ -131,7 +131,7 @@ export default function StoreFrontend({ slug }: { slug: string }) {
 
             (window as any).PaystackPop.setup({
                 key: paystackKey,
-                email: phoneNumber+"store@megagigs.net",  
+                email: phoneNumber+`+${storeData.storeName}`+"@megagigs.net",  
                 currency: 'GHS',
                 amount: Math.round(total * 100),
                 ref: reference,

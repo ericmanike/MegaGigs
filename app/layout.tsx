@@ -112,7 +112,7 @@ export default function RootLayout({
                 ],
                 "contactPoint": {
                   "@type": "ContactPoint",
-                  "telephone": "+233-551-043-686",
+                  "telephone": "+233-543-442-518",
                   "contactType": "customer service",
                   "areaServed": "GH",
                   "availableLanguage": "en"

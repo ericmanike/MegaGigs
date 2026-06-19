@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, Store, ExternalLink, Activity, DollarSign, Package } from "lucide-react";
+import { Search, Store, ExternalLink, Activity, DollarSign, Package, X } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
@@ -10,6 +10,57 @@ export default function AdminStoresPage() {
   const [stores, setStores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Credit modal states
+  const [creditModalOpen, setCreditModalOpen] = useState(false);
+  const [selectedStore, setSelectedStore] = useState<any>(null);
+  const [creditAmount, setCreditAmount] = useState("");
+  const [submittingCredit, setSubmittingCredit] = useState(false);
+
+  const openCreditModal = (store: any) => {
+    setSelectedStore(store);
+    setCreditModalOpen(true);
+  };
+
+  const closeCreditModal = () => {
+    setCreditModalOpen(false);
+    setSelectedStore(null);
+    setCreditAmount("");
+  };
+
+  const handleCreditProfit = async () => {
+    if (!selectedStore || !creditAmount) {
+      alert("Please enter an amount");
+      return;
+    }
+    const amount = parseFloat(creditAmount);
+    if (isNaN(amount) || amount <= 0) {
+      alert("Amount must be greater than 0");
+      return;
+    }
+    
+    setSubmittingCredit(true);
+    try {
+      const res = await fetch("/api/admin/stores/credit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storeId: selectedStore._id, amount }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStores(stores.map((s) => (s._id === selectedStore._id ? { ...s, totalProfit: data.store.totalProfit } : s)));
+        alert(`Successfully credited ${formatCurrency(amount)} to "${selectedStore.storeName}" profit balance!`);
+        closeCreditModal();
+      } else {
+        alert(data.message || "Failed to credit store profit");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error crediting store profit");
+    } finally {
+      setSubmittingCredit(false);
+    }
+  };
 
   useEffect(() => {
     const fetchStores = async () => {
@@ -130,14 +181,24 @@ export default function AdminStoresPage() {
                     {new Date(store.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Link 
-                      href={`/store/${store.slug}`}
-                      target="_blank"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-600 hover:text-white hover:bg-slate-600 border border-slate-200 rounded-lg transition-all"
-                    >
-                      <ExternalLink size={14} />
-                      View
-                    </Link>
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        onClick={() => openCreditModal(store)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-green-600 hover:text-white hover:bg-green-600 border border-green-200 rounded-lg transition-all"
+                        title="Credit Profit"
+                      >
+                        <DollarSign size={14} />
+                        Credit Profit
+                      </button>
+                      <Link 
+                        href={`/store/${store.slug}`}
+                        target="_blank"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-600 hover:text-white hover:bg-slate-600 border border-slate-200 rounded-lg transition-all"
+                      >
+                        <ExternalLink size={14} />
+                        View
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -193,18 +254,29 @@ export default function AdminStoresPage() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-zinc-100">
-                <span className="text-[11px] text-zinc-400">
-                  Created {new Date(store.createdAt).toLocaleDateString()}
-                </span>
-                <Link 
-                  href={`/store/${store.slug}`}
-                  target="_blank"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-slate-700 bg-zinc-100 rounded-lg hover:bg-zinc-200 transition-colors"
-                >
-                  <ExternalLink size={14} />
-                  Visit Store
-                </Link>
+              <div className="flex flex-col gap-2 pt-3 border-t border-zinc-100">
+                <div className="flex justify-between items-center">
+                  <span className="text-[11px] text-zinc-400">
+                    Created {new Date(store.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mt-1">
+                  <button
+                    onClick={() => openCreditModal(store)}
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-green-600 hover:text-white hover:bg-green-600 border border-green-200 rounded-lg transition-all"
+                  >
+                    <DollarSign size={14} />
+                    Add Profit
+                  </button>
+                  <Link 
+                    href={`/store/${store.slug}`}
+                    target="_blank"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-700 bg-zinc-100 rounded-lg hover:bg-zinc-200 transition-colors"
+                  >
+                    <ExternalLink size={14} />
+                    Visit Store
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
@@ -216,6 +288,72 @@ export default function AdminStoresPage() {
           )}
         </div>
       </Card>
+
+      {/* Credit Profit Modal */}
+      {creditModalOpen && selectedStore && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in zoom-in fade-in duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-zinc-900">Credit Profit</h3>
+              <button onClick={closeCreditModal} className="text-zinc-400 hover:text-zinc-600 transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div className="bg-zinc-50 p-4 rounded-xl">
+                <p className="text-sm text-zinc-500 mb-1">Store / Owner</p>
+                <p className="font-semibold text-zinc-900">{selectedStore.storeName}</p>
+                <p className="text-xs text-zinc-500 font-mono">/{selectedStore.slug}</p>
+                <p className="text-sm text-zinc-600 mt-2">
+                  Owner: <span className="font-semibold">{selectedStore.user?.name || "Unknown"}</span> ({selectedStore.user?.email || "No email"})
+                </p>
+                <p className="text-sm text-zinc-600 mt-1">
+                  Current Profit:{" "}
+                  <span className="font-bold text-green-600">{formatCurrency(selectedStore.totalProfit || 0)}</span>
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 mb-2">Amount to Add (GHS)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={creditAmount}
+                  onChange={(e) => setCreditAmount(e.target.value)}
+                  placeholder="Enter amount"
+                  className="w-full px-4 py-3 border border-zinc-300 rounded-xl focus:outline-none focus:border-slate-400 transition-colors"
+                />
+              </div>
+              {creditAmount && parseFloat(creditAmount) > 0 && (
+                <div className="bg-green-50/50 p-4 rounded-xl border border-green-100">
+                  <p className="text-sm text-green-800">
+                    New Profit Balance:{" "}
+                    <span className="font-bold text-green-700">
+                      {formatCurrency((selectedStore.totalProfit || 0) + parseFloat(creditAmount))}
+                    </span>
+                  </p>
+                </div>
+              )}
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={closeCreditModal}
+                  disabled={submittingCredit}
+                  className="flex-1 px-4 py-3 border border-zinc-300 text-zinc-700 rounded-xl hover:bg-zinc-50 transition-colors font-medium disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreditProfit}
+                  disabled={submittingCredit || !creditAmount || parseFloat(creditAmount) <= 0}
+                  className="flex-1 px-4 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors font-medium disabled:opacity-50 flex items-center justify-center gap-1.5"
+                >
+                  {submittingCredit ? "Processing..." : "Confirm Credit"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
