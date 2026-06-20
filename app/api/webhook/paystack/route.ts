@@ -11,8 +11,14 @@ import SystemLog from "@/models/SystemLog";
 import { handleDakazina, handleSpendless, handleDatamart } from "@/components/providers/apiProviders";
 import crypto from "crypto";
 import mongoose from "mongoose";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+
+
 
 export async function POST(request: Request) {
+  const session= await getServerSession(authOptions);
+  console.log("session", session)
   try {
     await dbConnect();
 
@@ -98,7 +104,8 @@ export async function POST(request: Request) {
       }
 
       //Check the price from the database and compare it with the price sent from the frontend (price)
-      const dbBundle = await Bundle.findOne({ name: bundleName }); 
+      const user = await User.findById(userId);
+      const dbBundle = await Bundle.findOne({ bundleName: bundleName , audience:(session?.user?.role == "agent")? 'agent' : 'user' }); 
     
       if(!dbBundle){ 
         throw new Error(`Bundle not found for network: ${network}, bundleName: ${bundleName}`);
