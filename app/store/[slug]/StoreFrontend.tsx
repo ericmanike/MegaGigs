@@ -13,6 +13,7 @@ import BuyingModal from "@/components/ui/agentbuyingModal";
 
 
 
+
 const NETWORKS = [
     { id: "MTN", name: "MTN", color: "bg-[#FFCC00]", textColor: "text-[#51291e]" },
     { id: "Telecel", name: "Telecel", color: "bg-[#E60000]", textColor: "text-white" },
@@ -147,36 +148,10 @@ export default function StoreFrontend({ slug }: { slug: string }) {
                 onClose: () => {
                     setLoading(false);
                 },
-                callback: function (response: any) {
-                    (async () => {
-                        try {
-                            const verifyResponse = await fetch('/api/agent/purchase', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                     agentId: storeData.agentId,
-                                     bundleId: selectedBundle._id,
-                                     phoneNumber,
-                                     reference,
-                                   
-                                }),
-                            });
-
-                            if (verifyResponse.ok) {
-                                setMessage("Payment successful! Your data will arrive shortly.");
-                                setTimeout(() => {
-                                    router.push(`/store/${slug}/track-order?ref=${phoneNumber}`);
-                                }, 500);
-                            } else {
-                                setMessage("Payment verification failed. Please contact support.");
-                            }
-                        } catch (err) {
-                            setMessage("An error occurred after payment.");
-                        } finally {
-                            setLoading(false);
-                        }
-                    })();
-                }
+                callback: async (response: any)=>{
+                    alert("Payment successful! Your data will arrive shortly.");
+                    router.push(`/store/${slug}/track-order?ref=${phoneNumber}`);
+                } 
             }).openIframe();
         } catch (error) {
             console.error(error);
