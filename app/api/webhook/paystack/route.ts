@@ -239,13 +239,13 @@ export async function POST(request: Request) {
       };
 
       let providerResponse;
-      if (provider === "dakazina" && DAKAZI_API_KEY) {
-        providerResponse = await handleDakazina(order, providerData, DAKAZI_API_KEY);
-      } else if (provider === "spendless" && SPENDLESS_API_KEY) {
-        providerResponse = await handleSpendless(order, providerData, SPENDLESS_API_KEY);
-      } else if (provider === "datamart" && DATAMART_API_KEY) {
-        providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
-      }
+      // if (provider === "dakazina" && DAKAZI_API_KEY) {
+      //   providerResponse = await handleDakazina(order, providerData, DAKAZI_API_KEY);
+      // } else if (provider === "spendless" && SPENDLESS_API_KEY) {
+      //   providerResponse = await handleSpendless(order, providerData, SPENDLESS_API_KEY);
+      // } else if (provider === "datamart" && DATAMART_API_KEY) {
+      //   providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
+      // }
 
       await SystemLog.create({
         level: "info",
