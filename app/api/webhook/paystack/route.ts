@@ -18,11 +18,7 @@ export async function POST(request: Request) {
     const key = process.env.PAYSTACK_SECRET_KEY;
     if (!key) {
       console.error("PAYSTACK_SECRET_KEY is not defined in env variables");
-      await SystemLog.create({
-        level: "error",
-        category: "webhook",
-        message: "Paystack Webhook: PAYSTACK_SECRET_KEY is not configured",
-      });
+   
       return NextResponse.json({ error: "Webhook signature key missing" }, { status: 500 });
     }
 
@@ -32,6 +28,7 @@ export async function POST(request: Request) {
       .update(rawBody)
       .digest("hex");
 
+     console.log("raw body", rawBody,  "expectedSignature", expectedSignature)
     const receivedSignature = request.headers.get("x-paystack-signature");
 
     if (!receivedSignature || expectedSignature !== receivedSignature) {
