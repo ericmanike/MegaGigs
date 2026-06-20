@@ -19,9 +19,10 @@ declare global {
                 email: string
                 currency: string
                 amount: number
+                metadata?: PaystackMetadata,
                 ref: string
                 onClose: () => void
-                callback: (response: { reference: string }) => void
+                // callback: (response: { reference: string }) => void
             }) => {
                 openIframe: () => void
             }
@@ -33,6 +34,22 @@ const NETWORKS = [
     { id: "Telecel", name: "Telecel", color: "bg-[#E60000]", textColor: "text-white" },
     { id: "AirtelTigo", name: "AirtelTigo", color: "bg-blue-600", textColor: "text-white" },
 ];
+
+interface PaystackMetadata {
+    phoneNumber: string;
+    network: string;
+    bundleId: string;
+    bundleName: string;
+    provider: string;
+    price: number;
+    paymentType: 'standard' | 'agent_store' | 'top_up';
+    userId: string;
+    agentId: string | null;
+
+}
+
+
+
 
 export default function BuyContent() {
     const router = useRouter();
@@ -180,47 +197,58 @@ export default function BuyContent() {
                 email: `${phoneNumber}@megagigs.net`,
                 currency: 'GHS',
                 amount: Math.round(total * 100), // Convert to kobo
-
+                metadata : ({
+                    phoneNumber,
+                    network: selectedNetwork,
+                    bundleId: selectedBundle._id,
+                    bundleName: selectedBundle.name,
+                    provider: selectedBundle.provider,
+                    price: price,
+                    paymentType: 'standard',
+                    agentId: 'default-none',
+                    userId: session?.user?.id as string
+                 
+                }),
                 ref: reference,
                 onClose: () => {
                    
                 },
-                callback: function (response) {
-                    (async () => {
-                        try {
-                            const verifyResponse = await fetch('/api/orders', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    network: selectedNetwork,
-                                    bundleName: selectedBundle.name.slice(0, -2),
-                                    price: selectedBundle.price,
-                                    phoneNumber,
-                                    reference,
-                                }),
-                            });
+            //   callback: function (response) {
+            //         (async () => {
+            //             try {
+            //                 const verifyResponse = await fetch('/api/orders', {
+            //                     method: 'POST',
+            //                     headers: { 'Content-Type': 'application/json' },
+            //                     body: JSON.stringify({
+            //                         network: selectedNetwork,
+            //                         bundleName: selectedBundle.name.slice(0, -2),
+            //                         price: selectedBundle.price,
+            //                         phoneNumber,
+            //                         reference,
+            //                     }),
+            //                 });
 
-                            if (verifyResponse.ok) {
-                                console.log('Payment verified');
+            //                 if (verifyResponse.ok) {
+            //                     console.log('Payment verified');
                                
-                                    if (session) {
-                                        router.push('/dashboard');
-                                    } else {
-                                        router.push(`/track-order?phone=${phoneNumber}`);
-                                    }
+            //                         if (session) {
+            //                             router.push('/dashboard');
+            //                         } else {
+            //                             router.push(`/track-order?phone=${phoneNumber}`);
+            //                         }
                                 
-                                setMessage("Payment successful");
-                            } else {
-                                console.log('Payment verification failed');
+            //                     setMessage("Payment successful");
+            //                 } else {
+            //                     console.log('Payment verification failed');
                                 
-                            } 
-                        } catch (err: any) {
-                            console.error('Error verifying payment', err);
-                            setMessage(err.message);
-                            alert("Something went wrong with the purchase. Please try again.");
-                        } 
-                    })();
-                },
+            //                 } 
+            //             } catch (err: any) {
+            //                 console.error('Error verifying payment', err);
+            //                 setMessage(err.message);
+            //                 alert("Something went wrong with the purchase. Please try again.");
+            //             } 
+            //         })();
+            //     },
 
             })
 

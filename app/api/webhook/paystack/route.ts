@@ -70,17 +70,17 @@ export async function POST(request: Request) {
     }
     metadata = metadata || {};
 
-    // Check if orders are closed
-    const ordersClosedDoc = await Setting.findOne({ key: "ordersClosed" }).select("value");
-    if (Boolean(ordersClosedDoc?.value)) {
-      console.warn("Paystack Webhook: Orders are closed but payment went through.");
-      await SystemLog.create({
-        level: "warn",
-        category: "webhook",
-        message: "Paystack Webhook: Payment received while orders are closed",
-        meta: { reference, amount, metadata },
-      });
-    }
+    // // Check if orders are closed
+    // const ordersClosedDoc = await Setting.findOne({ key: "ordersClosed" }).select("value");
+    // if (Boolean(ordersClosedDoc?.value)) {
+    //   console.warn("Paystack Webhook: Orders are closed but payment went through.");
+    //   await SystemLog.create({
+    //     level: "warn",
+    //     category: "webhook",
+    //     message: "Paystack Webhook: Payment received while orders are closed",
+    //     meta: { reference, amount, metadata },
+    //   });
+    // }
 
     // Prevent duplicate orders
     const existingOrder = await Order.findOne({ payment_id: reference });
@@ -145,14 +145,14 @@ export async function POST(request: Request) {
         reference,
       };
 
-      let providerResponse;
-      if (provider === "dakazina" && DAKAZI_API_KEY) {
-        providerResponse = await handleDakazina(order, providerData, DAKAZI_API_KEY);
-      } else if (provider === "spendless" && SPENDLESS_API_KEY) {
-        providerResponse = await handleSpendless(order, providerData, SPENDLESS_API_KEY);
-      } else if (provider === "datamart" && DATAMART_API_KEY) {
-        providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
-      }
+     let providerResponse;
+      // if (provider === "dakazina" && DAKAZI_API_KEY) {
+      //   providerResponse = await handleDakazina(order, providerData, DAKAZI_API_KEY);
+      // } else if (provider === "spendless" && SPENDLESS_API_KEY) {
+      //   providerResponse = await handleSpendless(order, providerData, SPENDLESS_API_KEY);
+      // } else if (provider === "datamart" && DATAMART_API_KEY) {
+      //   providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
+      // }
 
       await SystemLog.create({
         level: "info",
