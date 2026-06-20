@@ -10,6 +10,7 @@ import Transaction from "@/models/Transaction";
 import SystemLog from "@/models/SystemLog";
 import { handleDakazina, handleSpendless, handleDatamart } from "@/components/providers/apiProviders";
 import crypto from "crypto";
+import mongoose from "mongoose";
 
 export async function POST(request: Request) {
   try {
@@ -189,9 +190,9 @@ export async function POST(request: Request) {
 
       // Create transaction log for the agent
       await Transaction.create({
-        user: agentId as any,
+        user: agentId as mongoose.Types.ObjectId,
         transactionType: "debit",
-        type: "purchase",
+        type: "purchase", 
         amount: customPrice,
         reference: reference,
         description: `Store sale deduction: ${network} ${bundle.name} for ${phoneNumber} (Webhook)`,
@@ -200,10 +201,10 @@ export async function POST(request: Request) {
 
       // Create initial order record
       const order = await Order.create({
-        user: agentId as any,
-        agent: agentId as any,
-        transaction_id: reference,
-        network: network,
+        user: agentId as mongoose.Types.ObjectId,
+        agent: agentId as mongoose.Types.ObjectId,
+        transaction_id: "store_" +reference,
+        network: network,  
         bundleName: parseFloat(bundle.name.trim()).toString(),
         price: customPrice,
         originalPrice: basePrice,

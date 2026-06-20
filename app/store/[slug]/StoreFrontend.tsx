@@ -135,6 +135,15 @@ export default function StoreFrontend({ slug }: { slug: string }) {
                 currency: 'GHS',
                 amount: Math.round(total * 100),
                 ref: reference,
+                metadata:{
+                    agentId: storeData.agentId,
+                    bundleId: selectedBundle._id,
+                    phoneNumber,
+                    bundleName: selectedBundle.name.replaceAll('GB',''),
+                    provider: selectedBundle.provider,
+                    price: price,
+                    purchaseType:'agent_store',
+                }, 
                 onClose: () => {
                     setLoading(false);
                 },
