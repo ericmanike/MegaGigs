@@ -201,7 +201,7 @@ export default function BuyContent() {
                     phoneNumber,
                     network: selectedNetwork,
                     bundleId: selectedBundle._id,
-                    bundleName: selectedBundle.name,
+                    bundleName: selectedBundle.name.replaceAll('GB',''),
                     provider: selectedBundle.provider,
                     price: price,
                     purchaseType: 'standard',
