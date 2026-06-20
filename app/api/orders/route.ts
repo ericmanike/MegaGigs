@@ -11,6 +11,13 @@ import Transaction from "@/models/Transaction";
 
 
 export async function POST(req: Request) {
+
+
+    console.log("Testing Webhook")
+    NextResponse.json({
+        message: "Testing Webhook",
+        status:200
+    })
   try {
     
     // Session is optional — guests can place orders too

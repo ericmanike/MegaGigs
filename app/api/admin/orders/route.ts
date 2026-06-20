@@ -7,11 +7,7 @@ import Order from "@/models/Order";
 export async function GET() {
 
 
-    console.log("Testing Webhook")
-    NextResponse.json({
-        message: "Testing Webhook",
-        status:200
-    })
+  
 
     try {
         const session = await getServerSession(authOptions);
