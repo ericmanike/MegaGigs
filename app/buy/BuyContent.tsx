@@ -22,7 +22,7 @@ declare global {
                 metadata?: PaystackMetadata,
                 ref: string
                 onClose: () => void
-                // callback: (response: { reference: string }) => void
+                callback: (response: { reference: string }) => void
             }) => {
                 openIframe: () => void
             }
@@ -213,42 +213,42 @@ export default function BuyContent() {
                 onClose: () => {
                    
                 },
-            //   callback: function (response) {
-            //         (async () => {
-            //             try {
-            //                 const verifyResponse = await fetch('/api/orders', {
-            //                     method: 'POST',
-            //                     headers: { 'Content-Type': 'application/json' },
-            //                     body: JSON.stringify({
-            //                         network: selectedNetwork,
-            //                         bundleName: selectedBundle.name.slice(0, -2),
-            //                         price: selectedBundle.price,
-            //                         phoneNumber,
-            //                         reference,
-            //                     }),
-            //                 });
+              callback: function (response) {
+                    (async () => {
+                        try {
+                            const verifyResponse = await fetch('/api/orders', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    network: selectedNetwork,
+                                    bundleName: selectedBundle.name.slice(0, -2),
+                                    price: selectedBundle.price,
+                                    phoneNumber,
+                                    reference,
+                                }),
+                            });
 
-            //                 if (verifyResponse.ok) {
-            //                     console.log('Payment verified');
+                            if (verifyResponse.ok) {
+                                console.log('Payment verified');
                                
-            //                         if (session) {
-            //                             router.push('/dashboard');
-            //                         } else {
-            //                             router.push(`/track-order?phone=${phoneNumber}`);
-            //                         }
+                                    if (session) {
+                                        router.push('/dashboard');
+                                    } else {
+                                        router.push(`/track-order?phone=${phoneNumber}`);
+                                    }
                                 
-            //                     setMessage("Payment successful");
-            //                 } else {
-            //                     console.log('Payment verification failed');
+                                setMessage("Payment successful");
+                            } else {
+                                console.log('Payment verification failed');
                                 
-            //                 } 
-            //             } catch (err: any) {
-            //                 console.error('Error verifying payment', err);
-            //                 setMessage(err.message);
-            //                 alert("Something went wrong with the purchase. Please try again.");
-            //             } 
-            //         })();
-            //     },
+                            } 
+                        } catch (err: any) {
+                            console.error('Error verifying payment', err);
+                            setMessage(err.message);
+                            alert("Something went wrong with the purchase. Please try again.");
+                        } 
+                    })();
+                },
 
             })
 
