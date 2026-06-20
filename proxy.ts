@@ -27,8 +27,8 @@ export default withAuth(
         // req.nextauth.token is automatically populated by withAuth
         const token = req.nextauth.token;
         const role = token?.role;
-        console.log(token)
-        console.log(role)
+        // console.log(token)
+        // console.log(role)
         const pathname = req.nextUrl.pathname;
        
 
@@ -52,18 +52,7 @@ export default withAuth(
             }
         }
 
-        // 2. Protect User Routes: Redirect admins to admin dashboard
-        // Admins shouldn't be buying bundles for themselves in this flow usually, or at least
-        // the request explicitly asked to protect "dashboard from admin".
-        // I'll include /dashboard, /buy, and /history as user-centric routes.
-        // if (
-        //     (pathname.startsWith("/dashboard") ||
-        //         pathname.startsWith("/buy") ||
-        //         pathname.startsWith("/history")) &&
-        //     role === "admin"
-        // ) {
-        //     return NextResponse.redirect(new URL("/admin", req.url));
-        // }
+  
 
         return NextResponse.next();
     },

@@ -78,15 +78,7 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
           />
 
           
-          <NoticeItem
-            icon={<CheckCircle size={15} className="text-green-500 shrink-0 mt-0.5" />}
-            text={
-              <>
-                after momo approval confirmed payment by clicking on <br /> <strong className="text-[12px]  text-black font-extrabold">"I have made payment"</strong> button to ensure your order is created. 
-              </>
-            }
-            accent="green"
-          />
+         
         </div>
 
         
@@ -102,7 +94,7 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
             }}
             className="flex-1 md:px-3 px-2 text-sm md:py-2 py-1 text-sm rounded-2xl border-2 border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all"
           >
-          close
+          Okay
           </button>
      
         </div>

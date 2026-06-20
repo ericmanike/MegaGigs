@@ -214,40 +214,12 @@ export default function BuyContent() {
                    
                 },
               callback: function (response) {
-                    (async () => {
-                        try {
-                            const verifyResponse = await fetch('/api/orders', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    network: selectedNetwork,
-                                    bundleName: selectedBundle.name.slice(0, -2),
-                                    price: selectedBundle.price,
-                                    phoneNumber,
-                                    reference,
-                                }),
-                            });
-
-                            if (verifyResponse.ok) {
-                                console.log('Payment verified');
-                               
-                                    if (session) {
-                                        router.push('/dashboard');
+                        alert("Payment successful! Your data will arrive shortly.");
+                       if (session) {
+                                        router.push('/dashboard'); 
                                     } else {
                                         router.push(`/track-order?phone=${phoneNumber}`);
                                     }
-                                
-                                setMessage("Payment successful");
-                            } else {
-                                console.log('Payment verification failed');
-                                
-                            } 
-                        } catch (err: any) {
-                            console.error('Error verifying payment', err);
-                            setMessage(err.message);
-                            alert("Something went wrong with the purchase. Please try again.");
-                        } 
-                    })();
                 },
 
             })

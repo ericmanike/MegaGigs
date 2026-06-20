@@ -29,7 +29,6 @@ export async function POST(request: Request) {
       .update(rawBody)
       .digest("hex");
 
-     console.log("raw body", rawBody,  "expectedSignature", expectedSignature)
     const receivedSignature = request.headers.get("x-paystack-signature");
 
     if (!receivedSignature || expectedSignature !== receivedSignature) {
@@ -87,6 +86,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Order already exists for this reference" }, { status: 200 });
     }
 
+    
+
     const purchaseType = metadata.purchaseType;
 
     if (purchaseType === "standard") {
@@ -95,6 +96,23 @@ export async function POST(request: Request) {
       if (!network || !bundleName || !price || !phoneNumber) {
         throw new Error("Missing required standard metadata fields: network, bundleName, price, phoneNumber");
       }
+
+      //Check the price from the database and compare it with the price sent from the frontend (price)
+      const dbBundle = await Bundle.findOne({ name: bundleName }); 
+    
+      if(!dbBundle){ 
+        throw new Error(`Bundle not found for network: ${network}, bundleName: ${bundleName}`);
+      } 
+
+      const tax = 0.02 * price;
+
+      const expectedPriceInPesewas = Math.round((dbBundle.price + tax) * 100);
+   console.log("expectedPriceInPesewas", expectedPriceInPesewas, "payload.data.amount", payload.data.amount)
+if (payload.data.amount !== expectedPriceInPesewas) {
+
+    return NextResponse.json({ error: "Security Alert: Paid amount mismatch!" }, { status: 400 });
+}
+
 
       // Create order
       const order = await Order.create({

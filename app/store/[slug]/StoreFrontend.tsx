@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { formatCurrency } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+
 import BuyingModal from "@/components/ui/agentbuyingModal";
 
 
@@ -28,7 +28,7 @@ export default function StoreFrontend({ slug }: { slug: string }) {
     const [selectedBundle, setSelectedBundle] = useState<any>(null);
     const [phoneNumber, setPhoneNumber] = useState("");
     const [loading, setLoading] = useState(false);
-    const { data: session } = useSession();
+  
 
     const [storeData, setStoreData] = useState<any>(null);
     const [bundles, setBundles] = useState<any[]>([]);
@@ -132,7 +132,7 @@ export default function StoreFrontend({ slug }: { slug: string }) {
 
             (window as any).PaystackPop.setup({
                 key: paystackKey,
-                email: phoneNumber+`+${storeData.storeName}`+"@megagigs.net",  
+                email: phoneNumber+"@megagigs.net",  
                 currency: 'GHS',
                 amount: Math.round(total * 100),
                 ref: reference,
@@ -148,7 +148,7 @@ export default function StoreFrontend({ slug }: { slug: string }) {
                 onClose: () => {
                     setLoading(false);
                 },
-                callback: async (response: any)=>{
+                callback: function (response: any){
                     alert("Payment successful! Your data will arrive shortly.");
                     router.push(`/store/${slug}/track-order?ref=${phoneNumber}`);
                 } 

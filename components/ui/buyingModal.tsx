@@ -82,15 +82,7 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
 
         
 
-          <NoticeItem
-            icon={<CheckCircle size={15} className="text-green-500 shrink-0 mt-0.5" />}
-            text={
-              <>
-                after momo approval confirm payment by clicking on <strong>"I have made payment"</strong>. 
-              </>
-            }
-            accent="green"
-          />
+          
 
             
           
