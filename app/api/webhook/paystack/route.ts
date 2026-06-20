@@ -11,14 +11,10 @@ import SystemLog from "@/models/SystemLog";
 import { handleDakazina, handleSpendless, handleDatamart } from "@/components/providers/apiProviders";
 import crypto from "crypto";
 import mongoose from "mongoose";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 
 
 
 export async function POST(request: Request) {
-  const session= await getServerSession(authOptions);
-  console.log("session", session)
   try {
     await dbConnect();
 
@@ -103,22 +99,22 @@ export async function POST(request: Request) {
         throw new Error("Missing required standard metadata fields: network, bundleName, price, phoneNumber");
       }
 
-      //Check the price from the database and compare it with the price sent from the frontend (price)
-      const user = await User.findById(userId);
-      const dbBundle = await Bundle.findOne({ bundleName: bundleName+"GB" , audience:((session?.user?.role == "agent")? 'agent' : 'user').toString() }); 
+//       //Check the price from the database and compare it with the price sent from the frontend (price)
+//       const user = await User.findById(userId);
+//       const dbBundle = await Bundle.findOne({ bundleName: bundleName+"GB" , audience:((session?.user?.role == "agent")? 'agent' : 'user').toString() }); 
     
-      if(!dbBundle){ 
-        throw new Error(`Bundle not found for network: ${network}, bundleName: ${bundleName}`);
-      } 
+//       if(!dbBundle){ 
+//         throw new Error(`Bundle not found for network: ${network}, bundleName: ${bundleName}`);
+//       } 
 
-      const tax = 0.02 * price;
+//       const tax = 0.02 * price;
 
-      const expectedPriceInPesewas = Math.round((dbBundle.price + tax) * 100);
-   console.log("expectedPriceInPesewas", expectedPriceInPesewas, "payload.data.amount", payload.data.amount)
-if (payload.data.amount !== expectedPriceInPesewas) {
+//       const expectedPriceInPesewas = Math.round((dbBundle.price + tax) * 100);
+//    console.log("expectedPriceInPesewas", expectedPriceInPesewas, "payload.data.amount", payload.data.amount)
+// if (payload.data.amount !== expectedPriceInPesewas) {
 
-    return NextResponse.json({ error: "Security Alert: Paid amount mismatch!" }, { status: 400 });
-}
+//     return NextResponse.json({ error: "Security Alert: Paid amount mismatch!" }, { status: 400 });
+// }
 
 
       // Create order
@@ -169,13 +165,13 @@ if (payload.data.amount !== expectedPriceInPesewas) {
       };
 
      let providerResponse;
-      // if (provider === "dakazina" && DAKAZI_API_KEY) {
-      //   providerResponse = await handleDakazina(order, providerData, DAKAZI_API_KEY);
-      // } else if (provider === "spendless" && SPENDLESS_API_KEY) {
-      //   providerResponse = await handleSpendless(order, providerData, SPENDLESS_API_KEY);
-      // } else if (provider === "datamart" && DATAMART_API_KEY) {
-      //   providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
-      // }
+      if (provider === "dakazina" && DAKAZI_API_KEY) {
+        providerResponse = await handleDakazina(order, providerData, DAKAZI_API_KEY);
+      } else if (provider === "spendless" && SPENDLESS_API_KEY) {
+        providerResponse = await handleSpendless(order, providerData, SPENDLESS_API_KEY);
+      } else if (provider === "datamart" && DATAMART_API_KEY) {
+        providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
+      }
 
       await SystemLog.create({
         level: "info",
@@ -264,13 +260,13 @@ if (payload.data.amount !== expectedPriceInPesewas) {
       };
 
       let providerResponse;
-      // if (provider === "dakazina" && DAKAZI_API_KEY) {
-      //   providerResponse = await handleDakazina(order, providerData, DAKAZI_API_KEY);
-      // } else if (provider === "spendless" && SPENDLESS_API_KEY) {
-      //   providerResponse = await handleSpendless(order, providerData, SPENDLESS_API_KEY);
-      // } else if (provider === "datamart" && DATAMART_API_KEY) {
-      //   providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
-      // }
+      if (provider === "dakazina" && DAKAZI_API_KEY) {
+        providerResponse = await handleDakazina(order, providerData, DAKAZI_API_KEY);
+      } else if (provider === "spendless" && SPENDLESS_API_KEY) {
+        providerResponse = await handleSpendless(order, providerData, SPENDLESS_API_KEY);
+      } else if (provider === "datamart" && DATAMART_API_KEY) {
+        providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
+      }
 
       await SystemLog.create({
         level: "info",
