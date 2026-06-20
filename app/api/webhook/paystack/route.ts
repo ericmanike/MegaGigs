@@ -105,7 +105,7 @@ export async function POST(request: Request) {
 
       //Check the price from the database and compare it with the price sent from the frontend (price)
       const user = await User.findById(userId);
-      const dbBundle = await Bundle.findOne({ bundleName: bundleName , audience:(session?.user?.role == "agent")? 'agent' : 'user' }); 
+      const dbBundle = await Bundle.findOne({ bundleName: bundleName+"GB" , audience:((session?.user?.role == "agent")? 'agent' : 'user').toString() }); 
     
       if(!dbBundle){ 
         throw new Error(`Bundle not found for network: ${network}, bundleName: ${bundleName}`);
