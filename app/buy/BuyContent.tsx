@@ -42,7 +42,7 @@ interface PaystackMetadata {
     bundleName: string;
     provider: string;
     price: number;
-    paymentType: 'standard' | 'agent_store' | 'top_up';
+    purchaseType: 'standard' | 'agent_store' | 'top_up';
     userId: string;
     agentId: string | null;
 
@@ -204,7 +204,7 @@ export default function BuyContent() {
                     bundleName: selectedBundle.name,
                     provider: selectedBundle.provider,
                     price: price,
-                    paymentType: 'standard',
+                    purchaseType: 'standard',
                     agentId: 'default-none',
                     userId: session?.user?.id as string
                  
