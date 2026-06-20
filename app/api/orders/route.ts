@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
 
     console.log("Testing Webhook")
-    NextResponse.json({
+    return NextResponse.json({
         message: "Testing Webhook",
         status:200
     })
