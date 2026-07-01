@@ -70,13 +70,15 @@ export async function handleSpendless(order: any, data: any, apiKey: string) {
 }
 
 export async function handleDatamart(order: any, data: any, apiKey: string) {
+
+
   let networkKey;
 
   if (data.network.toUpperCase() === "MTN") networkKey = "YELLO";
   else if (data.network.toUpperCase() === "TELECEL") networkKey = "TELECEL";
   else if (data.network.toUpperCase().startsWith("AT")) networkKey = "AT_PREMIUM";
   else throw new Error("Invalid network");
-
+ try{
   const res = await fetch("https://api.datamartgh.shop/api/developer/purchase", {
     method: "POST",
     headers: {
@@ -92,6 +94,7 @@ export async function handleDatamart(order: any, data: any, apiKey: string) {
   });
 
   const result = await res.json();
+  console.log("Datamart result", result)
 
   if (result.status === "success" || result.transaction_id) {
     order.transaction_id = result.data?.transactionReference || result.transaction_id || result.transaction_code || `datamart_${Date.now()}`;
@@ -100,4 +103,7 @@ export async function handleDatamart(order: any, data: any, apiKey: string) {
   }
   console.log('Datamart result:', result);
   return result;
+} catch(error){
+  console.log(error)
+ }
 }
