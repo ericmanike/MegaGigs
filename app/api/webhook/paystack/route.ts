@@ -155,6 +155,7 @@ export async function POST(request: Request) {
 
       const providerDoc = await Setting.findOne({ key: "provider" });
       const provider = providerDoc?.value || "dakazina";
+      console.log(provider)
 
       const providerData = {
         network,
@@ -172,6 +173,8 @@ export async function POST(request: Request) {
       } else if (provider === "datamart" && DATAMART_API_KEY) {
         providerResponse = await handleDatamart(order, providerData, DATAMART_API_KEY);
       }
+      console.log("  Data Provider Res ", providerResponse)
+
 
       await SystemLog.create({
         level: "info",
