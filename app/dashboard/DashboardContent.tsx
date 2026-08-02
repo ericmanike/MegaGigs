@@ -28,7 +28,7 @@ import {
 import { formatCurrency } from "@/lib/utils";
 import BecomeAgent from "@/components/ui/becomeAgent";
 import TopUpwallet from "@/components/ui/topUpwallet";
-import DashboardWelcomeModal from "@/components/ui/DashboardWelcomeModal";
+
 import AgentStoreSettings from "@/components/ui/AgentStoreSettings";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
@@ -94,7 +94,7 @@ export default function DashboardContent({ userName, balance, recentOrders, isAd
 
   return (
     <div className="flex flex-col md:flex-row md:pt-28 pt-24 z-0 min-h-screen bg-linear-to-b from-zinc-50/80 to-white">
-      <DashboardWelcomeModal />
+  
       {/* Mobile sidebar backdrop */}
       <div
         role="button"

@@ -17,7 +17,7 @@ import {
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import DashboardWelcomeModal from "@/components/ui/DashboardWelcomeModal";
+
 
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -54,8 +54,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex flex-col md:flex-row md:pt-28 pt-24 z-0 min-h-screen bg-gradient-to-b from-zinc-50/80 to-white">
-      <DashboardWelcomeModal />
-
+    
       {/* Mobile backdrop */}
       <div
         role="button"

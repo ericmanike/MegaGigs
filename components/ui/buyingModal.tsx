@@ -72,7 +72,9 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
               <>  
                Kindly double-check your number before proceeding.<strong className="px-2">wrong phone number</strong>
                cannot be refunded.
-               
+               <br />
+               <br />
+               All failed orders will be refunded back to your wallet within 24-48 hours. 
               </>
             }
             accent="red"
