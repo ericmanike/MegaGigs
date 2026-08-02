@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation"
-import { AlertTriangle, Clock, CheckCircle, Shield, X } from "lucide-react"
+import { AlertTriangle, X } from "lucide-react"
 import { useState, useEffect } from "react"
 
 type Props = {
