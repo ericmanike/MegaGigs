@@ -52,10 +52,15 @@ export default function RegisterPage() {
             }
     const email = formData?.email
     const password = formData?.password
-    if(!email || !password){
+    const phone = formData?.phone
+    if(!email || !password || !phone){
         alert('something went wrong missing email and paddword')
         return
     }
+    if(phone.length !== 10){
+        alert('phone number must be 10 digits')
+        return
+    } 
 
    const Loginres =  await signIn("credentials",{
           email,

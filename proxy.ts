@@ -71,6 +71,7 @@ export const config = {
         "/dashboard/:path*",
         "/admin/:path*",
         "/profile/:path*",
-        "/history/:path*"
+        "/history/:path*",
+        "/buy/:path*" 
     ],
 };
