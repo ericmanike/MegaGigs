@@ -455,8 +455,8 @@ export default function BuyContent() {
                         <CardContent className="p-6">
 
                             <div className="text-red-900  bg-red-100 p-2 rounded-xl text-center text-sm mb-6 font-bold shadow-lg"> 
-                                <strong className="text-red-900 font-extrabold">Notice! </strong> After momo approval, click on I've completed payment  
-                                   to verify your payment.
+                                <strong className="text-red-900 font-extrabold">Notice! </strong> All failed orders will be refunded back to your wallet within 24-48 hours. 
+                       
                          
                             
                             </div>
