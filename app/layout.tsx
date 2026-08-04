@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "MegaGigs - Buy Data Bundles Instantly",
-    description: "Cheapest data bundles for your research and studies. Instant delivery.",
+    description: "Cheapest data bundles for your research and studies.Delivery within few minutes/hours.",
     creator: "@megagigs",
     images: ["https://megagigs.net/og_image.png"],
   },
