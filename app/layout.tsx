@@ -60,8 +60,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://megagigs.net/og_image.png",
-        width: 683,
-        height: 1024,
+        width: 1200,
+        height: 630,
         alt: "MegaGigs - Data Bundles for MTN, Telecel & AirtelTigo",
       },
     ],
