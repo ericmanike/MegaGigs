@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     siteName: "MegaGigs",
     images: [
       {
-        url: "https://megagigs.net/og-image.png",
+        url: "https://megagigs.net/og_image.png",
         width: 683,
         height: 1024,
         alt: "MegaGigs - Data Bundles for MTN, Telecel & AirtelTigo",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "MegaGigs - Buy Data Bundles Instantly",
     description: "Cheapest data bundles for your research and studies. Instant delivery.",
     creator: "@megagigs",
-    images: ["https://megagigs.net/og-image.png"],
+    images: ["https://megagigs.net/og_image.png"],
   },
   category: "technology",
 };
