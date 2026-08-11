@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation"
-import { AlertTriangle, X } from "lucide-react"
+import { AlertTriangle, X, CheckCircle } from "lucide-react"
+import Link from "next/link"
 import { useState, useEffect } from "react"
 
 type Props = {
@@ -56,8 +57,8 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
               <AlertTriangle size={20} className="text-amber-400" />
             </div>
             <div>
-              <h2 className="text-white font-black text-base tracking-tight">Important Notice</h2>
-              <p className="text-slate-400 text-xs mt-0.5">Please read before proceeding</p>
+              <h2 className="text-white font-black text-lg tracking-tight">Important Notice</h2>
+              <p className="text-slate-400 text-sm sm:text-xs mt-0.5">Please read before proceeding</p>
             </div>
           </div>
         </div>
@@ -66,10 +67,20 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
         <div className="px-6 py-5 space-y-3 max-h-[60vh] overflow-y-auto font-medium">
           {/* Notice items */}
           <NoticeItem
-            icon={<AlertTriangle size={15} className="text-red-500 shrink-0 mt-0.5" />}
+            icon={<CheckCircle size={18} className="text-green-600 shrink-0 mt-0.5" />}
+            text={
+              <>
+                The system has been restored. Customers who do not receive their data bundle within 24 hours should <Link href="/contact" className="text-green-700 font-bold underline hover:text-green-800">contact support</Link>.
+              </>
+            }
+            accent="green"
+          />
+
+          <NoticeItem
+            icon={<AlertTriangle size={18} className="text-red-500 shrink-0 mt-0.5" />}
             text={
               <>  
-               Kindly double-check your number before proceeding.<strong className="px-2 text-[12px] text-black">wrong phone number</strong>
+               Kindly double-check your number before proceeding.<strong className="px-2 text-black">wrong phone number</strong>
                cannot be refunded.
                
               </>
@@ -92,7 +103,7 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
                 onClose();
                
             }}
-            className="flex-1 md:px-3 px-2 text-sm md:py-2 py-1 text-sm rounded-2xl border-2 border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all"
+            className="flex-1 md:px-3 px-2 text-base sm:text-sm md:py-2 py-2 rounded-2xl border-2 border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all"
           >
           Okay
           </button>
@@ -132,7 +143,7 @@ function NoticeItem({
   return (
     <div className={`flex items-start gap-3 p-3 rounded-xl border ${bg[accent]}`}>
       {icon}
-      <p className="text-xs text-slate-700 leading-relaxed font-semibold">{text}</p>
+      <p className="text-base sm:text-xs text-slate-700 leading-relaxed font-semibold">{text}</p>
     </div>
   )
 }

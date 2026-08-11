@@ -57,8 +57,8 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
               <AlertTriangle size={20} className="text-amber-400" />
             </div>
             <div>
-              <h2 className="text-white font-black text-base tracking-tight">Important Notice</h2>
-              <p className="text-slate-400 text-xs mt-0.5">Please read before proceeding</p>
+              <h2 className="text-white font-black text-lg tracking-tight">Important Notice</h2>
+              <p className="text-slate-400 text-sm sm:text-xs mt-0.5">Please read before proceeding</p>
             </div>
           </div>
         </div>
@@ -67,7 +67,17 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
         <div className="px-6 py-5 space-y-3 max-h-[60vh] overflow-y-auto font-medium">
           {/* Notice items */}
           <NoticeItem
-            icon={<AlertTriangle size={15} className="text-red-500 shrink-0 mt-0.5" />}
+            icon={<CheckCircle size={18} className="text-green-600 shrink-0 mt-0.5" />}
+            text={
+              <>
+                The system has been restored. Customers who do not receive their data bundle within 24 hours should <Link href="/contact" className="text-green-700 font-bold underline hover:text-green-800">contact support</Link>.
+              </>
+            }
+            accent="green"
+          />
+
+          <NoticeItem
+            icon={<AlertTriangle size={18} className="text-red-500 shrink-0 mt-0.5" />}
             text={
               <>  
                Kindly double-check your number before proceeding.<strong className="px-2">wrong phone number</strong>
@@ -89,7 +99,7 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
             
           
           <NoticeItem
-            icon={<Crown size={15} className="text-blue-500 shrink-0 mt-0.5" />}
+            icon={<Crown size={18} className="text-blue-500 shrink-0 mt-0.5" />}
             text={
               <>
                 Want to earn extra cash? <Link href="/dashboard/upgrade" className="text-blue-600 font-bold hover:underline">Sign up to become an agent for free!</Link>
@@ -119,7 +129,7 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
               />
               <CheckCircle size={12} className="absolute text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
             </div>
-            <span className="text-sm font-medium text-slate-600 group-hover:text-slate-900 transition-colors">
+            <span className="text-base sm:text-sm font-medium text-slate-600 group-hover:text-slate-900 transition-colors">
               Don't show this again
             </span>
           </label>
@@ -135,13 +145,13 @@ export default function BuyingModal({ isOpen, onClose, onConfirm }: Props) {
                 onClose();
                 router.push('/');
             }}
-            className="flex-1 md:px-3 px-2 text-sm md:py-2 py-1 text-sm rounded-2xl border-2 border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all"
+            className="flex-1 md:px-3 px-2 text-base sm:text-sm md:py-2 py-2 rounded-2xl border-2 border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all"
           >
           close
           </button>
           <button
             onClick={handleConfirm}
-            className="flex-1 px-4 md:py-2 py-1 text-sm rounded-xl bg-gradient-to-r from-slate-800 to-slate-900 text-white font-semibold hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg shadow-slate-900/20 active:scale-95"
+            className="flex-1 px-4 md:py-2 py-2 text-base sm:text-sm rounded-xl bg-gradient-to-r from-slate-800 to-slate-900 text-white font-semibold hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg shadow-slate-900/20 active:scale-95"
           >
             Continue
           </button>
@@ -181,7 +191,7 @@ function NoticeItem({
   return (
     <div className={`flex items-start gap-3 p-3 rounded-xl border ${bg[accent]}`}>
       {icon}
-      <p className="text-xs text-slate-700 leading-relaxed font-semibold">{text}</p>
+      <p className="text-base sm:text-xs text-slate-700 leading-relaxed font-semibold">{text}</p>
     </div>
   )
 }
