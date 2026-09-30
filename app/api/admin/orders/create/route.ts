@@ -6,7 +6,7 @@ import Order from "@/models/Order";
 import Setting from "@/models/Setting";
 import Bundle from "@/models/Bundle";
 import mongoose from "mongoose";
-import { handleDakazina, handleSpendless, handleDatamart } from "@/components/providers/apiProviders";
+import { handleDakazina, handleSpendless, handleDatamart, handleDataBundlesHub } from "@/components/providers/apiProviders";
 
 export async function POST(req: Request) {
     try {
@@ -64,6 +64,9 @@ export async function POST(req: Request) {
         } else if (provider === 'datamart') {
             const DATAMART_API_KEY = process.env.DATAMART_API_KEY || process.env.DATA_MART_API_KEY!;
             handleDatamart(createdOrder, {phoneNumber, reference, network, bundleName}, DATAMART_API_KEY);
+        } else if (provider === 'databundleshub' || provider === 'dataBundlesHub') {
+            const DATABUNDLESHUB_API_KEY = process.env.DATABUNDLESHUB_API_KEY!
+            handleDataBundlesHub(createdOrder, {phoneNumber, reference, network, bundleName}, DATABUNDLESHUB_API_KEY);
         } else {
             return NextResponse.json({message: 'API provider not defined'}, { status: 400 });
         }

@@ -44,6 +44,8 @@ A core feature of the application is the **Agent System**, which allows users to
 The application has a configurable provider system (stored in the DB `Setting` model) to switch between multiple upstream APIs for data bundle fulfillment:
 1. **Dakazina** (`dakazina`)
 2. **Spendless** (`spendless`)
+3. **Datamart** (`datamart`)
+4. **Data Bundles Hub** (`databundleshub`)
 
 When a purchase is made, the backend automatically maps the requested network (MTN, Telecel, AirtelTigo) to the respective provider's expected network ID/key format and fires the request.
 

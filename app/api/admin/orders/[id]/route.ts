@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth';
 import dbConnect from '@/lib/mongoose';
 import Order from '@/models/Order';
 import Setting from '@/models/Setting';
-import { handleDakazina, handleSpendless, handleDatamart } from '@/components/providers/apiProviders';
+import { handleDakazina, handleSpendless, handleDatamart, handleDataBundlesHub } from '@/components/providers/apiProviders';
 // Delete an order
 export async function DELETE(
   req: Request,
@@ -204,6 +204,21 @@ export async function PATCH(
         reference: order.transaction_id
       };
       orderResponse = await handleDatamart(order, data, DATAMART_API_KEY);
+    } else if (provider?.value === "databundleshub" || provider?.value === "dataBundlesHub") {
+      const DATABUNDLESHUB_API_KEY = process.env.DATABUNDLESHUB_API_KEY!
+      if (!DATABUNDLESHUB_API_KEY) {
+        return NextResponse.json(
+          { error: "Data Bundles Hub API key not configured" },
+          { status: 500 }
+        );
+      }
+      const data = {
+        network: order.network,
+        phoneNumber: order.phoneNumber,
+        bundleName: order.bundleName,
+        reference: order.transaction_id
+      };
+      orderResponse = await handleDataBundlesHub(order, data, DATABUNDLESHUB_API_KEY);
     }
 
 

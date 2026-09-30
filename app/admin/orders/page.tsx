@@ -323,7 +323,8 @@ export default function AdminOrdersPage() {
             {[
               { value: "dakazina", label: "Dakazina" },
               { value: "spendless", label: "Spendless" },
-              { value: "datamart", label: "Datamart" }
+              { value: "datamart", label: "Datamart" },
+              { value: "databundleshub", label: "Data Bundles Hub" }
             ].map((provider) => (
               <label
                 key={provider.value}

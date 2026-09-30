@@ -59,7 +59,7 @@ export async function POST(req: Request) {
 
     const body = await req.json().catch(() => ({}));
     const { provider } = body as { provider?: string };
-    const allowed = ["dakazina", "spendless", "datamart"];
+    const allowed = ["dakazina", "spendless", "datamart", "databundleshub"];
     if (typeof provider !== "string" || !allowed.includes(provider)) {
       return NextResponse.json({ message: "provider must be one of: " + allowed.join(", ") }, { status: 400 });
     }

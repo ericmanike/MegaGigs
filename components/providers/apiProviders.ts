@@ -106,4 +106,31 @@ export async function handleDatamart(order: any, data: any, apiKey: string) {
 } catch(error){
   console.log(error)
  }
+} 
+
+export async function handleDataBundlesHub(order: any, data: any, apiKey: string) {
+  const res = await fetch(
+    "https://www.databundleshub.com/api/developer/purchase",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        "phoneNumber": data.phoneNumber.trim(),
+        "capacity": `${parseInt(data.bundleName)}`
+      }),
+    }
+  );
+
+  const result = await res.json();
+
+  if (result.success && result.data) {
+    order.transaction_id = "nexa-" + result.data.transactionReference;
+    order.status = "processing";
+    await order.save();
+  }
+  // console.log('Databundlehub result:', result);
+  return result;
 }
