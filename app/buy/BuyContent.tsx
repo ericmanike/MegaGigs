@@ -454,11 +454,11 @@ export default function BuyContent() {
                     <Card>
                         <CardContent className="p-6">
 
-                            <div className="text-red-900  bg-red-100 p-2 rounded-xl text-center text-sm mb-6 font-bold shadow-lg"> 
-                                <strong className="text-red-900 font-extrabold">Notice! </strong> All failed orders will be refunded back to your wallet within 24-48 hours. 
-                       
-                         
-                            
+                            <div className="text-red-900  bg-red-100 p-2 rounded-xl text-center text-sm mb-6 font-bold shadow-lg">
+                                <strong className="text-red-900 font-extrabold">Notice! </strong> Don't place multiple orders for the same number at once.
+
+
+
                             </div>
                             <div className="mb-3">
                                 <label className="text-sm font-medium text-black mb-2 block">
