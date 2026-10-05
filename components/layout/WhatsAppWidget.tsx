@@ -38,7 +38,7 @@ export default function WhatsAppWidget() {
 
             {/* Floating Action Button */}
             <Link 
-                href="https://wa.me/233543442518" 
+                href="https://wa.me/233509352247" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="group relative flex md:h-[60px] md:w-[60px] h-[45px] w-[45px] items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#25D366]/50"

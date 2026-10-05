@@ -19,7 +19,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
         }
 
         // Format agent phone to international format for WhatsApp
-        let agentPhone = "233543442518"; // default fallback
+        let agentPhone = "233509352247"; // default fallback
         const storeUser = store.user as any; // Cast to any to bypass TS ObjectId type restriction
         
         if (storeUser && storeUser.phone) {

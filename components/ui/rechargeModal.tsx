@@ -184,7 +184,7 @@ export default function RechargeModal({ isOpen, setAmount, amount, setIsOpen, ha
                     className="w-full py-2.5 rounded-xl bg-slate-100 text-slate-700 text-[13px] font-bold hover:bg-slate-200 transition-all active:scale-[0.98]"
                     onClick={() => setIsOpen(false)}
                 >
-                    I have sent the money
+                    I have made payment
                 </button>
              </div>
           )}

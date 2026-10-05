@@ -89,7 +89,7 @@ export default function TrackOrderPage() {
             <p className="text-white/80 text-sm mt-1">Enter your phone number — no sign-in needed</p>
             <div className="mt-5 mx-auto max-w-[95%] bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-xl flex items-start gap-3 text-left shadow-sm">
               <Info className="shrink-0 text-white opacity-90 mt-0.5" size={18} />
-              <span>If you <strong>HAVE MADE PAYMENT</strong> but don't see your order, please <a href="https://wa.me/233543442518" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-white/80 transition-colors">contact support</a>.</span>
+              <span>If you <strong>HAVE MADE PAYMENT</strong> but don't see your order, please <a href="https://wa.me/233509352247" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-white/80 transition-colors">contact support</a>.</span>
             </div>
           </div>
 

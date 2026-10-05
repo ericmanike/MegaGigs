@@ -8,9 +8,6 @@ import { formatCurrency } from "@/lib/utils";
 import { useSession } from "next-auth/react"
 import Link from "next/link";
 
-
-
-
 declare global {
     interface Window {
         PaystackPop: {
