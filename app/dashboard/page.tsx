@@ -19,6 +19,7 @@ import {
 import { formatCurrency } from "@/lib/utils";
 import BecomeAgent from "@/components/ui/becomeAgent";
 import TopUpwallet from "@/components/ui/topUpwallet";
+import WelcomeCard from "@/components/ui/dashboardCard";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -40,35 +41,21 @@ export default async function DashboardPage() {
   const placed   = recentOrdersRaw.filter((o: any) => o.status === "placed").length;
   const processing = recentOrdersRaw.filter((o: any) => o.status === "processing").length;
 
-
-
-
-  
+  const userName = session.user.name?.split(" ")[0] ?? "User";
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-3 duration-400">
+      <WelcomeCard
+        name={userName}
+        balance={balance}
+      />
+    
+     
+     
+     
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch">
-        <Card className="overflow-hidden  h-full">
-          <CardContent className="p-5 h-full flex flex-col">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-                <Wallet className="text-emerald-600" size={24} />
-              </div>
-              <div>
-                <p className="text-xs font-medium text-zinc-500 uppercase tracking-wide">
-                  Wallet Balance
-                </p>
-                <p className="text-xl font-bold text-zinc-900 mt-0.5">
-                  {formatCurrency(balance)}
-                </p>
-              </div>
-            </div>
-            <div className="mt-auto">
-              <TopUpwallet />
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1   items-stretch">
+        
 
         <Link href="/dashboard/orders" className="group h-full">
           <Card className="overflow-hidden   transition-all duration-200 h-full">
@@ -78,8 +65,8 @@ export default async function DashboardPage() {
                   <ShoppingBag className="text-slate-600" size={20} />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-zinc-500 uppercase tracking-wide">Total Orders</p>
-                  <p className="text-xl font-bold text-zinc-900 leading-tight">{totalOrders}</p>
+                  <p className="text-[14px] font-bold text-zinc-500 uppercase tracking-wide">Total Orders</p>
+                  <p className="text-[14px] font-bold text-zinc-900 leading-tight">{totalOrders}</p>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 mt-auto">
@@ -101,38 +88,18 @@ export default async function DashboardPage() {
         </Link>
       </div>
 
-      {/* Navigation hint card */}
-      <div className="rounded-2xl border border-zinc-200/80 bg-white/60 p-5">
-        <p className="text-zinc-600 text-sm">
-           Buy Airtime, Data, Result Checker or register for AFA   Using  the buttons below
-        </p>
-        <div className="flex flex-wrap gap-2 mt-4">
-          <Link
-            href="/dashboard/transactions"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#E42320] text-white text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            Transactions <ArrowRight size={14} />
-          </Link>
-          <Link
-            href="/dashboard/result-checkers"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-zinc-700 text-sm font-medium hover:bg-zinc-50 transition-colors"
-          >
-             Buy a Result Checker - WASSCE & BECE   <ArrowRight size={14} />
-             
-          </Link> 
-        </div>
-      </div>
+
 
        <div>
         <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">
           Available Services
         </p>
-        <div className="grid  grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="grid  grid-cols-2  md:grid-cols-3 gap-3">
           {[
-            { name: "MTN", bg: "#FFCC00", text: "#1a1200", letter: "M", network: "MTN" },
-            { name: "Telecel", bg: "#E60000", text: "#ffffff", letter: "T", network: "Telecel" },
-            { name: "AirtelTigo", bg: "#0077C8", text: "#ffffff", letter: "A", network: "AirtelTigo" },
-            {name:"AFA Registration",bg:"#109f12db",text:"#FFFFFF",letter:"A",network:"AFA"},
+            { name: "MTN Data", bg: "#FFCC00", text: "#1a1200", letter: "M", network: "MTN" },
+            { name: "Telecel Data", bg: "#E60000", text: "#ffffff", letter: "T", network: "Telecel" },
+            { name: "AirtelTigo Data", bg: "#0077C8", text: "#ffffff", letter: "A", network: "AirtelTigo" },
+
             {name:"Result Checker",bg:"#3905f5ff",text:"#FFFFFF",letter:"R",network:"Result Checker"},
             {name:"Create Data Shop", bg:"#5E7A76",text:"#FFFFFF",letter:"D",network:"Data Shop"}
           ].map((net) => (
@@ -158,6 +125,10 @@ export default async function DashboardPage() {
           ))}
         </div>
       </div>
+     
+
+    
+
 
     
 

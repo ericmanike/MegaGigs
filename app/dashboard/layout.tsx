@@ -212,21 +212,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Main content area */}
       <div className="flex-1 flex justify-center p-4 md:p-6 md:pl-60 lg:pl-64 w-full">
         <div className="w-full max-w-4xl space-y-8">
-          {/* Greeting card — mobile only */}
-          <div className="flex md:hidden items-center rounded-[5px] p-4 bg-white border-l-4 borde-l-[#62748e] border-y border-r  shadow-lg gap-3">
-          
-            <div className="min-w-0">
-              <div className="flex items-center gap-1.5">
-                <p className="text-sm font-bold text-zinc-900 leading-tight truncate">
-                  {greeting}, {userName}! 👋
-                </p>
-             
-              </div>
-              <p className="text-xs text-zinc-500 font-medium truncate mt-0.5">
-                Welcome back to your dashboard
-              </p>
-            </div>
-          </div>
+      
 
           {/* Desktop header greeting */}
           <div className="hidden md:block mb-2">
