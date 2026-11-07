@@ -17,11 +17,10 @@ import mongoose from "mongoose";
 export async function POST(request: Request) {
   try {
     await dbConnect();
-
     const key = process.env.PAYSTACK_SECRET_KEY;
     if (!key) {
       console.error("PAYSTACK_SECRET_KEY is not defined in env variables");
-   
+  
       return NextResponse.json({ error: "Webhook signature key missing" }, { status: 500 });
     }
 
