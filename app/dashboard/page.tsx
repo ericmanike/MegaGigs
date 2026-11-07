@@ -106,14 +106,14 @@ export default async function DashboardPage() {
             <Link
               key={net.network}
               href={`${net.network =="Result Checker" ? '/dashboard/result-checkers' : net.network =="Data Shop" ? '/dashboard/upgrade': net.network =="AFA" ? '/afa-registration': `/buy?network=${net.network}`}`}
-              className="group rounded-2xl overflow-hidden border border-zinc-200/80 hover:-translate-y-1 hover:shadow-md transition-all duration-200"
+              className="group rounded-2xl overflow-hidden border border-zinc-200/80 hover:-translate-y-1 hover:shadow-md transition-all duration-200 "
             >
               <div
                 className="p-4 flex flex-col items-center gap-2 text-center"
                 style={{ backgroundColor: net.bg}}
               >
                 <div
-                  className="w-6 h-6 text-[10px] rounded-full flex items-center justify-center font-black text-lg shadow"
+                  className="w-12 h-12 text-[10px] rounded-full flex items-center justify-center font-black text-lg shadow"
                   style={{ backgroundColor: "rgba(0,0,0,0.15)", color: net.text }}
                 >
                   {net.letter}
