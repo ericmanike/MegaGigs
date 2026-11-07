@@ -4,8 +4,6 @@ import "./globals.css";
 import AuthProvider from "@/components/providers/AuthProvider";
 import Navbar from "@/components/layout/Navbar";
 import WhatsAppWidget from "@/components/layout/WhatsAppWidget";
-import ContactDeveloper from "@/components/ui/ContactDeveloper";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,7 +92,7 @@ export default function RootLayout({
           <Navbar />
           <main className="min-h-screen z-0">
             {children} 
-            <ContactDeveloper />
+
           </main>  
           <WhatsAppWidget /> 
           <script
