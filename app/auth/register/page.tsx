@@ -62,24 +62,20 @@ export default function RegisterPage() {
         return
     } 
 
-   const Loginres =  await signIn("credentials",{
-          email,
-          password,
-          redirect:false,
-             }
-             )
+            const Loginres = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
+            });
+
             if (Loginres?.error) {
                 setError(Loginres.error);
+                setLoading(false);
             } else {
-                router.push("/dashboard");
-                router.refresh();
+                window.location.href = "/dashboard";
             }
-
-         console.log(Loginres)
-
         } catch (err: any) {
             setError(err.message);
-        } finally {
             setLoading(false);
         }
     };

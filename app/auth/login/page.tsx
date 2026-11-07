@@ -44,13 +44,12 @@ export default function LoginPage() {
 
             if (res?.error) {
                 setError(res.error);
+                setLoading(false);
             } else {
-                router.push(callbackUrl);
-                router.refresh();
+                window.location.href = callbackUrl;
             }
         } catch (err: any) {
-            setError("Too many attempts , try again later");
-        } finally {
+            setError("Too many attempts, try again later");
             setLoading(false);
         }
     };
