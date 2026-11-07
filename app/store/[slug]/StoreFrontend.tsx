@@ -308,7 +308,7 @@ export default function StoreFrontend({ slug }: { slug: string }) {
                                     type="tel"
                                     value={phoneNumber}
                                     onChange={(e) => setPhoneNumber(e.target.value)}
-                                    className="w-full px-4 py-2 rounded-xl border border-slate-900 bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 text-lg tracking-wide"
+                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-900 bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 text-[16px] tracking-wide"
                                     placeholder="024XXXXXXX"
                                     autoFocus
                                 />

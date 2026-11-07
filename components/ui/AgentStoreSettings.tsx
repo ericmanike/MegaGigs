@@ -278,7 +278,7 @@ export default function AgentStoreSettings() {
                                     // Auto-generate slug: lowercase, replace spaces with hyphens, remove non-alphanumeric (except hyphens)
                                     setSlug(name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
                                 }}
-                                className="w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none text-[16px] md:text-sm"
                                 placeholder="e.g. John's Data Plug"
                             />
                         </div>
@@ -380,7 +380,7 @@ export default function AgentStoreSettings() {
                                                                             step="0.5"
                                                                             value={profit}
                                                                             onChange={e => handleProfitChange(bundle._id, e.target.value)}
-                                                                            className="w-full pl-6 pr-2 py-1.5 rounded-lg border border-zinc-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow font-medium"
+                                                                            className="w-full pl-6 pr-2 py-1.5 rounded-lg border border-zinc-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow font-medium text-[16px] md:text-sm"
                                                                             placeholder="0.00"
                                                                         />
                                                                         <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-xs font-semibold">₵</span>

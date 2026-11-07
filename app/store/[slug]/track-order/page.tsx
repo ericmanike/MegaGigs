@@ -104,7 +104,7 @@ export default function TrackOrderPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="e.g. 0241234567"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#E42320]/25 focus:border-[#E42320] transition-shadow"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#E42320]/25 focus:border-[#E42320] transition-shadow text-[16px]"
                   disabled={loading}
                 />
               </div>
