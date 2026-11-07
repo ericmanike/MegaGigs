@@ -10,7 +10,6 @@ import {
   ShoppingBag,
   Shield,
   X,
-  Menu,
   Wifi,
   Users,
 } from "lucide-react";
@@ -213,24 +212,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Main content area */}
       <div className="flex-1 flex justify-center p-4 md:p-6 md:pl-60 lg:pl-64 w-full">
         <div className="w-full max-w-4xl space-y-8">
-          {/* Top header bar — mobile only */}
-          <div className="flex md:hidden flex-row items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={() => setSidebarOpen(true)}
-              className="flex items-center gap-1.5 pl-2.5 pr-3.5 py-2 rounded-xl bg-white border border-zinc-200/80 text-zinc-700 hover:bg-zinc-50 transition-colors text-sm font-semibold shrink-0"
-              aria-label="Open dashboard menu"
-            >
-              <Menu size={18} />
-              Menu
-            </button>
-
-            {/* Greeting — right side on mobile */}
-            <div className="text-center min-w-0">
-              <p className="text-sm font-bold text-zinc-900 leading-tight truncate">
-                {greeting} 👋
+          {/* Greeting card — mobile only */}
+          <div className="flex md:hidden items-center rounded-[5px] p-4 bg-white border-l-4 borde-l-[#62748e] border-y border-r  shadow-lg gap-3">
+          
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5">
+                <p className="text-sm font-bold text-zinc-900 leading-tight truncate">
+                  {greeting}, {userName}! 👋
+                </p>
+             
+              </div>
+              <p className="text-xs text-zinc-500 font-medium truncate mt-0.5">
+                Welcome back to your dashboard
               </p>
-              <p className="text-[11px] font-semibold text-zinc-900">{userName}</p>
             </div>
           </div>
 

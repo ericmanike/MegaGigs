@@ -89,22 +89,6 @@ export async function POST(request: Request) {
         throw new Error("Missing required standard metadata fields: network, bundleName, price, phoneNumber");
       }
 
-//       //Check the price from the database and compare it with the price sent from the frontend (price)
-//       const user = await User.findById(userId);
-//       const dbBundle = await Bundle.findOne({ bundleName: bundleName+"GB" , audience:((session?.user?.role == "agent")? 'agent' : 'user').toString() }); 
-    
-//       if(!dbBundle){ 
-//         throw new Error(`Bundle not found for network: ${network}, bundleName: ${bundleName}`);
-//       } 
-
-//       const tax = 0.02 * price;
-
-//       const expectedPriceInPesewas = Math.round((dbBundle.price + tax) * 100);
-//    console.log("expectedPriceInPesewas", expectedPriceInPesewas, "payload.data.amount", payload.data.amount)
-// if (payload.data.amount !== expectedPriceInPesewas) {
-
-//     return NextResponse.json({ error: "Security Alert: Paid amount mismatch!" }, { status: 400 });
-// }
 
 
       // Create order
@@ -275,6 +259,68 @@ export async function POST(request: Request) {
       });
 
       return NextResponse.json({ message: "Agent store order created successfully", orderId: order._id }, { status: 201 });
+
+    } else if (purchaseType === "top_up" || purchaseType === "wallet_topup" || purchaseType === "topup") {
+      const targetUserId = metadata.userId || metadata.user;
+      let user = targetUserId ? await User.findById(targetUserId) : null;
+      if (!user && payload.data.customer?.email) {
+        user = await User.findOne({ email: payload.data.customer.email.toLowerCase() });
+      }
+
+      if (!user) {
+        throw new Error(`User not found for wallet top-up. targetUserId: ${targetUserId}, email: ${payload.data.customer?.email}`);
+      }
+
+      // Prevent duplicate crediting if already processed
+      const existingTx = await Transaction.findOne({ reference });
+      if (existingTx) {
+        console.log(`Paystack Webhook: Top-up already processed for reference ${reference}. Skipping.`);
+        return NextResponse.json({ message: "Top-up already processed for this reference" }, { status: 200 });
+      }
+
+      // Calculate amount to credit in Cedis (GHS)
+      const creditAmount =amount / 100;
+      if (!creditAmount || isNaN(creditAmount) || creditAmount <= 0) {
+        throw new Error(`Invalid top-up amount: ${creditAmount}`);
+      }
+
+      // Credit the user's wallet
+      const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        { $inc: { walletBalance: creditAmount } },
+        { new: true }
+      );
+
+      // Create transaction log (must match TransactionSchema enum: type: 'topup', transactionType: 'credit')
+      await Transaction.create({
+        user: user._id as mongoose.Types.ObjectId,
+        transactionType: "credit",
+        type: "topup",
+        amount: creditAmount,
+        reference: reference,
+        description: `Wallet top-up of GH₵${creditAmount.toFixed(2)} via Paystack (Webhook)`,
+        status: "success",
+      });
+
+      console.log(`Paystack Webhook: Successfully credited GH₵${creditAmount} to ${user.email}. New balance: ${updatedUser?.walletBalance}`);
+
+      await SystemLog.create({
+        level: "info",
+        category: "webhook",
+        message: `Paystack Webhook: Processed wallet top-up for ${user.email} (GH₵${creditAmount})`,
+        meta: {
+          userId: user._id,
+          reference,
+          amount: creditAmount,
+          newBalance: updatedUser?.walletBalance,
+        },
+      });
+
+      return NextResponse.json({
+        message: "Wallet top-up processed successfully",
+        userId: user._id,
+        newBalance: updatedUser?.walletBalance,
+      }, { status: 200 });
 
     } else {
       // Unknown or missing purchaseType

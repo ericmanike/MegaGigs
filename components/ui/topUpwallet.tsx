@@ -59,36 +59,18 @@ function topUpwallet() {
                 email: session?.user?.email!,
                 currency: 'GHS',
                 amount: Math.round((amount! + (amount! * 0.02)) * 100), // Convert to kobo
-
                 ref: reference,
+                metadata: {
+                    purchaseType: 'top_up',
+                    userId: session?.user?.id,
+                    amount: amount,
+                },
                 onClose: () => {
 
                 },
                 callback: function (response) {
-                    (async () => {
-                        try {
-                            const verifyResponse = await fetch('/api/topupWallet', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    email: session?.user?.email!,
-                                    amount,
-                                    reference,
-                                }),
-                            });
-
-                            if (verifyResponse.ok) {
-                                console.log('Payment verified');
-                                window.location.reload();
-                            } else {
-                                console.log('Payment verification failed');
-                            }
-                        } catch (err) {
-                            console.error('Error verifying payment', err);
-                        } finally {
-
-                        }
-                    })();
+                    
+                  
                 },
 
             })

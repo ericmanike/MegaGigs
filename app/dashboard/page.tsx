@@ -159,40 +159,9 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Premium Upgrade CTA
-      <div className="bg-zinc-900 rounded-2xl p-6 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/10 blur-[80px] rounded-full -mr-10 -mt-10" />
-        <div className="relative flex flex-col sm:flex-row items-center justify-between gap-5">
-          <div className="space-y-3 text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start gap-2">
-              <Crown className="text-amber-400" size={22} />
-              <span className="text-lg font-black tracking-tight">Become An Agent</span>
-            </div>
-            <ul className="space-y-1.5">
-              <li className="flex items-center gap-2 text-zinc-300 text-sm">
-                <CheckCircle size={14} className="text-amber-400 shrink-0" /> Make profit from selling data bundles
-              </li>
-              <li className="flex items-center gap-2 text-zinc-300 text-sm">
-                <CheckCircle size={14} className="text-amber-400 shrink-0" /> No monthly subscription
-              </li>
-              <li className="flex items-center gap-2 text-zinc-300 text-sm">
-                <CheckCircle size={14} className="text-amber-400 shrink-0" /> Get a personalized store and dashboard
-              </li>
-            </ul>
-          </div>
-          <div className="flex flex-col items-center gap-3 shrink-0">
-            <div className="text-center">
-              <p className="text-zinc-400 text-sm font-bold uppercase tracking-widest mb-0.5">Free Registration</p>
-              <p className="text-3xl font-black text-white">{formatCurrency(0.00)}</p>
-            </div>
-            <div className="w-full min-w-[160px]">
-              <BecomeAgent />
-            </div>
-          </div>
-        </div>
-      </div>
+    
 
-       */}
+   
 
        <div className="w-full flex justify-center">
 

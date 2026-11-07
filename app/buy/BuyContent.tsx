@@ -33,16 +33,16 @@ const NETWORKS = [
 ];
 
 interface PaystackMetadata {
-    phoneNumber: string;
-    network: string;
-    bundleId: string;
-    bundleName: string;
-    provider: string;
-    price: number;
+    phoneNumber?: string;
+    network?: string;
+    bundleId?: string;
+    bundleName?: string;
+    provider?: string;
+    price?: number;
+    amount?: number;
     purchaseType: 'standard' | 'agent_store' | 'top_up';
-    userId: string;
-    agentId: string | null;
-
+    userId?: string;
+    agentId?: string | null;
 }
 
 
