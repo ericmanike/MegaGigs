@@ -150,7 +150,7 @@ export default function WelcomeCard({
 
       <section
         aria-label="Account summary"
-        className="w-full overflow-hidden rounded-[10px] bg-slate-700 border border-slate-800 p-5 sm:p-8 text-white shadow-xl shadow-slate-950/20 relative"
+        className="w-full overflow-hidden rounded-[15px] bg-slate-700 border border-slate-800 p-5 sm:p-8 text-white shadow-xl shadow-slate-950/20 relative"
       >
         <p className="text-[12px] sm:text-sm text-slate-400 font-medium">{greeting},</p>
         <h1 className="mt-0.5 text-2xl sm:text-4xl font-bold tracking-tight text-white">{name}</h1>
