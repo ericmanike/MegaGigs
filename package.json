@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@formspree/react": "^3.0.0",
+    "@marsidev/react-turnstile": "^1.6.3",
     "@types/styled-components": "^5.1.36",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.1",

@@ -14,7 +14,6 @@ interface WelcomeCardProps {
   onTopUp?: () => void;
   onHistory?: () => void;
 }
-
 export default function WelcomeCard({
   name = "User",
   balance = 0,

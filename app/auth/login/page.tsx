@@ -1,12 +1,13 @@
-    "use client";
+"use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { LogIn, Loader2, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -19,6 +20,9 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
+    const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+    const turnstileRef = useRef<TurnstileInstance>(null);
+    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
     const handleGoogleSignIn = async () => {
         setGoogleLoading(true);
@@ -33,24 +37,35 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+
+        if (siteKey && !turnstileToken) {
+            setError("Please complete the security check.");
+            return;
+        }
+
         setLoading(true);
 
         try {
             const res = await signIn("credentials", {
                 email,
                 password,
+                turnstileToken: turnstileToken || "",
                 redirect: false,
             });
 
             if (res?.error) {
                 setError(res.error);
                 setLoading(false);
+                turnstileRef.current?.reset();
+                setTurnstileToken(null);
             } else {
                 window.location.href = callbackUrl;
             }
         } catch (err: any) {
             setError("Too many attempts, try again later");
             setLoading(false);
+            turnstileRef.current?.reset();
+            setTurnstileToken(null);
         }
     };
 
@@ -160,6 +175,28 @@ export default function LoginPage() {
                                 Forgot Password?
                             </Link>
                         </div>
+
+                        {siteKey && (
+                            <div className="flex justify-center my-3 min-h-[65px]">
+                                <Turnstile
+                                    ref={turnstileRef}
+                                    siteKey={siteKey}
+                                    onSuccess={(token) => {
+                                        setTurnstileToken(token);
+                                        setError("");
+                                    }}
+                                    onError={(err) => {
+                                        setTurnstileToken(null);
+                                        if (String(err) === "110200") {
+                                            setError("Turnstile Error 110200: 'localhost' is not in your allowed domains in the Cloudflare Turnstile dashboard.");
+                                        } else {
+                                            setError(`Security verification failed to load (Error ${err}).`);
+                                        }
+                                    }}
+                                    onExpire={() => setTurnstileToken(null)}
+                                />
+                            </div>
+                        )}
 
                         <button
                             type="submit"

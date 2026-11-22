@@ -1,6 +1,7 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Model } from 'mongoose';
 
-export interface IOrder extends Document {
+export interface IOrder {
+    _id: mongoose.Types.ObjectId;
     user?: mongoose.Types.ObjectId; // Optional — guests have no user ID
     agent?: mongoose.Types.ObjectId;
     transaction_id: string;

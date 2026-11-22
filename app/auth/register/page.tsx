@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { UserPlus, Loader2, Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -18,6 +19,9 @@ export default function RegisterPage() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
+    const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+    const turnstileRef = useRef<TurnstileInstance>(null);
+    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
     const handleGoogleSignIn = async () => {
         setGoogleLoading(true);
@@ -36,13 +40,33 @@ export default function RegisterPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+
+        const email = formData?.email;
+        const password = formData?.password;
+        const phone = formData?.phone;
+
+        if (!formData.name || !email || !password || !phone) {
+            setError("Please fill in all required fields");
+            return;
+        }
+
+        if (phone.length !== 10) {
+            setError("Phone number must be 10 digits");
+            return;
+        }
+
+        if (siteKey && !turnstileToken) {
+            setError("Please complete the security check.");
+            return;
+        }
+
         setLoading(true);
 
         try {
             const res = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ ...formData, turnstileToken }),
             });
 
             const data = await res.json();
@@ -50,33 +74,27 @@ export default function RegisterPage() {
             if (!res.ok) {
                 throw new Error(data.message || "Something went wrong");
             }
-    const email = formData?.email
-    const password = formData?.password
-    const phone = formData?.phone
-    if(!email || !password || !phone){
-        alert('something went wrong missing email and paddword')
-        return
-    }
-    if(phone.length !== 10){
-        alert('phone number must be 10 digits')
-        return
-    } 
 
             const Loginres = await signIn("credentials", {
                 email,
                 password,
+                turnstileToken: turnstileToken || "",
                 redirect: false,
             });
 
             if (Loginres?.error) {
                 setError(Loginres.error);
                 setLoading(false);
+                turnstileRef.current?.reset();
+                setTurnstileToken(null);
             } else {
                 window.location.href = "/dashboard";
             }
         } catch (err: any) {
             setError(err.message);
             setLoading(false);
+            turnstileRef.current?.reset();
+            setTurnstileToken(null);
         }
     };
 
@@ -198,6 +216,28 @@ export default function RegisterPage() {
                                 </button>
                             </div>
                         </div>
+
+                        {siteKey && (
+                            <div className="flex justify-center my-3 min-h-[65px]">
+                                <Turnstile
+                                    ref={turnstileRef}
+                                    siteKey={siteKey}
+                                    onSuccess={(token) => {
+                                        setTurnstileToken(token);
+                                        setError("");
+                                    }}
+                                    onError={(err) => {
+                                        setTurnstileToken(null);
+                                        if (String(err) === "110200") {
+                                            setError("Turnstile Error 110200: 'localhost' is not in your allowed domains in the Cloudflare Turnstile dashboard.");
+                                        } else {
+                                            setError(`Security verification failed to load (Error ${err}).`);
+                                        }
+                                    }}
+                                    onExpire={() => setTurnstileToken(null)}
+                                />
+                            </div>
+                        )}
 
                         <button
                             type="submit"

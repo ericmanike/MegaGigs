@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import bcrypt from 'bcryptjs';
 import dbConnect from './mongoose';
 import User from '@/models/User';
+import { verifyTurnstileToken } from './turnstile';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -16,10 +17,18 @@ export const authOptions: NextAuthOptions = {
             credentials: {
                 email: { label: 'Email', type: 'email' },
                 password: { label: 'Password', type: 'password' },
+                turnstileToken: { label: 'Turnstile Token', type: 'text' },
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
                     throw new Error('Please enter an email and password');
+                }
+
+                if (process.env.TURNSTILE_SECRET_KEY && credentials?.turnstileToken) {
+                    const isValid = await verifyTurnstileToken(credentials.turnstileToken);
+                    if (!isValid) {
+                        throw new Error('Security verification failed. Please try again.');
+                    }
                 }
 
                 await dbConnect();

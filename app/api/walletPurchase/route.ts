@@ -37,10 +37,16 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: "Orders are currently closed" }, { status: 403 });
         }
 
+        const role = session.user.role as "user" | "agent" | "promo";
+        const audiences: ("user" | "agent" | "promo")[] =
+            ["user", "agent", "promo"].includes(role)
+                ? [role, "promo", "user"]
+                : ["user", "promo"];
+
         const dbPrice = await Bundle.findOne({
             name: bundleName + "GB",
             network: network,
-            audience: { $in: [session.user.role, 'promo', 'user'] },
+            audience: { $in: audiences },
             isActive: true
         }).select('price');
         const realPrice = dbPrice ? dbPrice.price : null;

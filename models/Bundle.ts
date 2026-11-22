@@ -1,6 +1,7 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Model } from 'mongoose';
 
-export interface IBundle extends Document {
+export interface IBundle {
+    _id: mongoose.Types.ObjectId;
     network: 'MTN' | 'Telecel' | 'AirtelTigo';
     name: string; // e.g. "1GB", "2.5GB"
     sizeValue: number; // Value in MB for sorting/calc if needed, e.g. 1024
