@@ -1,11 +1,15 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 
 function ContactPage() {
     const [submitting, setSubmitting] = useState(false);
     const [succeeded, setSucceeded] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+    const turnstileRef = useRef<TurnstileInstance>(null);
+    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
     const { ref, inView } = useInView({
         threshold: 0.2,
@@ -19,8 +23,14 @@ function ContactPage() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setError(null);
+
+        if (siteKey && !turnstileToken) {
+            setError("Please complete the security check before sending.");
+            return;
+        }
+
         setSubmitting(true);
-        setError(false);
 
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
@@ -29,16 +39,22 @@ function ContactPage() {
             const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
+                body: JSON.stringify({ ...data, turnstileToken }),
             });
 
-            if (response.ok) {
+            const result = await response.json();
+
+            if (response.ok && result.success) {
                 setSucceeded(true);
             } else {
-                setError(true);
+                setError(result.error || "Submission failed. Please try again later.");
+                turnstileRef.current?.reset();
+                setTurnstileToken(null);
             }
         } catch (err) {
-            setError(true);
+            setError("Submission failed. Please try again later.");
+            turnstileRef.current?.reset();
+            setTurnstileToken(null);
         } finally {
             setSubmitting(false);
         }
@@ -56,8 +72,12 @@ function ContactPage() {
                     <h2 className="text-2xl font-bold text-slate-900 mb-2">Message Sent!</h2>
                     <p className="text-slate-600 mb-6">Thank you for reaching out. We'll get back to you as soon as possible.</p>
                     <button
-                        onClick={() => setSucceeded(false)}
-                        className="w-full bg-[#191097] text-white font-semibold py-2 rounded-lg hover:bg-[#0b3eb4] transition-all"
+                        onClick={() => {
+                            setSucceeded(false);
+                            setTurnstileToken(null);
+                            setError(null);
+                        }}
+                        className="w-full bg-[#191097] text-white font-semibold py-2 rounded-lg hover:bg-[#0b3eb4] transition-all cursor-pointer"
                     >
                         Send Another Message
                     </button>
@@ -76,7 +96,7 @@ function ContactPage() {
 
                 {error && (
                     <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm font-medium text-center">
-                        Submission failed. Please try again later.
+                        {error}
                     </div>
                 )}
 
@@ -117,11 +137,33 @@ function ContactPage() {
                         />
                     </div>
 
+                    {siteKey && (
+                        <div className="flex justify-center my-3 min-h-[65px]">
+                            <Turnstile
+                                ref={turnstileRef}
+                                siteKey={siteKey}
+                                onSuccess={(token) => {
+                                    setTurnstileToken(token);
+                                    setError(null);
+                                }}
+                                onError={(err) => {
+                                    setTurnstileToken(null);
+                                    if (String(err) === "110200") {
+                                        setError("Turnstile Error 110200: 'localhost' is not in your allowed domains in the Cloudflare Turnstile dashboard.");
+                                    } else {
+                                        setError(`Security verification failed to load (Error ${err}).`);
+                                    }
+                                }}
+                                onExpire={() => setTurnstileToken(null)}
+                            />
+                        </div>
+                    )}
+
                     <button
                         ref={Submit}
                         type="submit"
                         disabled={submitting}
-                        className={`w-full bg-[#191097] text-white font-semibold py-3 rounded-lg hover:bg-[#0b3eb4] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-500
+                        className={`w-full bg-[#191097] text-white font-semibold py-3 rounded-lg hover:bg-[#0b3eb4] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-500 cursor-pointer
                ${sinView ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
                     >
                         {submitting ? 'Sending...' : 'Send Message'}
