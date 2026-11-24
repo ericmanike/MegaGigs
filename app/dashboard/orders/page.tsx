@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import clsx from "clsx";
+import { CopyOrderId } from "@/components/ui/CopyOrderId";
 
 export const metadata = {
   title: "Orders History | MegaGigs Dashboard",
@@ -90,16 +91,16 @@ export default async function OrdersPage() {
                   >
                     <Wifi size={20} />
                   </div>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <p className="font-semibold text-zinc-900 truncate">
                       {order.network} {order.bundleName} GB
                     </p>
                     <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                      <span className="text-xs text-zinc-500">
+                      <span className="text-xs text-zinc-500 shrink-0">
                         {new Date(order.createdAt).toLocaleDateString()}
                       </span>
-                      <span className="text-xs text-zinc-400">•</span>
-                      <span className="text-xs text-zinc-500 font-mono">{order.transaction_id}</span>
+                      <span className="text-xs text-zinc-400 shrink-0">•</span>
+                      <CopyOrderId id={order.transaction_id} maxWidth="max-w-[110px] sm:max-w-[200px]" />
                     </div>
                   </div>
                 </div>

@@ -8,6 +8,7 @@ import {
 import { Card, CardContent } from "@/components/ui/Card";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
+import { CopyOrderId } from "@/components/ui/CopyOrderId";
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -396,19 +397,7 @@ export default function AdminOrdersPage() {
               {filteredOrders.map((order) => (
                 <tr key={order._id} className="hover:bg-zinc-50 transition-colors">
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs text-zinc-500 max-w-[140px] truncate">
-                        #{order.transaction_id}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => navigator.clipboard?.writeText(order.transaction_id).catch(() => alert("Failed to copy ID"))}
-                        className="p-1 rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors"
-                        title="Copy transaction ID"
-                      >
-                        <Copy size={14} />
-                      </button>
-                    </div>
+                    <CopyOrderId id={order.transaction_id} maxWidth="max-w-[130px] lg:max-w-[170px]" />
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex flex-col">
@@ -506,24 +495,13 @@ export default function AdminOrdersPage() {
         <div className="md:hidden space-y-4 p-4">
           {filteredOrders.map((order) => (
             <div key={order._id} className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm">
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex flex-col gap-0.5">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono text-zinc-500 max-w-[160px] truncate">
-                      #{order.transaction_id}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => navigator.clipboard?.writeText(order.transaction_id).catch(() => alert("Failed to copy"))}
-                      className="p-1 rounded hover:bg-zinc-100 text-zinc-400"
-                    >
-                      <Copy size={12} />
-                    </button>
-                  </div>
-                  <span className="font-semibold text-zinc-900">{order.user?.name || "Unknown"}</span>
-                  <span className="text-xs text-zinc-500">{order.phoneNumber}</span>
+              <div className="flex items-start justify-between mb-3 gap-2">
+                <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                  <CopyOrderId id={order.transaction_id} maxWidth="max-w-[120px] xs:max-w-[160px] sm:max-w-[200px]" />
+                  <span className="font-semibold text-zinc-900 truncate">{order.user?.name || "Unknown"}</span>
+                  <span className="text-xs text-zinc-500 truncate">{order.phoneNumber}</span>
                 </div>
-                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium
+                <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium
                   ${order.network === "MTN" ? "bg-yellow-400 text-yellow-950" :
                     order.network === "Telecel" ? "bg-red-500 text-white" : "bg-blue-600 text-white"}`}>
                   {order.network} {order.bundleName} GB

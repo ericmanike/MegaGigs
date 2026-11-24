@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { formatCurrency } from "@/lib/utils";
+import { CopyOrderId } from "@/components/ui/CopyOrderId";
 
 export default function ModeratorOrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -103,17 +104,8 @@ export default function ModeratorOrdersPage() {
               {filteredOrders.map((order) => (
                 <tr key={order._id} className="hover:bg-zinc-50 transition-colors">
                   <td className="px-6 py-4">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] text-zinc-500">#{order.transaction_id}</span>
-                        <button
-                          type="button"
-                          onClick={() => navigator.clipboard?.writeText(order.transaction_id)}
-                          className="text-zinc-300 hover:text-zinc-600 transition-colors"
-                        >
-                          <Copy size={12} />
-                        </button>
-                      </div>
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <CopyOrderId id={order.transaction_id} maxWidth="max-w-[130px] lg:max-w-[170px]" />
                       <span className="text-[11px] text-zinc-400">
                         {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
@@ -162,12 +154,13 @@ export default function ModeratorOrdersPage() {
         <div className="md:hidden divide-y divide-zinc-100 p-4 space-y-4">
            {filteredOrders.map((order) => (
              <div key={order._id} className="pt-2">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex flex-col">
-                    <span className="font-black text-zinc-900">{order.user?.name || "Guest"}</span>
-                    <span className="text-xs text-zinc-500 font-mono">{order.phoneNumber}</span>
+                <div className="flex justify-between items-start mb-2 gap-2">
+                  <div className="flex flex-col min-w-0 flex-1">
+                    <CopyOrderId id={order.transaction_id} maxWidth="max-w-[120px] xs:max-w-[160px] sm:max-w-[200px]" className="mb-0.5" />
+                    <span className="font-black text-zinc-900 truncate">{order.user?.name || "Guest"}</span>
+                    <span className="text-xs text-zinc-500 font-mono truncate">{order.phoneNumber}</span>
                   </div>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase
+                  <span className={`shrink-0 px-2 py-0.5 rounded text-[10px] font-black uppercase
                     ${order.network === "MTN" ? "bg-[#FFCC00] text-[#51291e]" :
                       order.network === "Telecel" ? "bg-[#E60000] text-white" : "bg-blue-600 text-white"}`}>
                     {order.network}

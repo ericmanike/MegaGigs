@@ -5,6 +5,7 @@ import { ArrowRight, Search, CheckCircle2, XCircle, Clock, Loader2, ArrowLeft, P
 import { useEffect, useState } from "react";
 import { formatCurrency } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
+import { CopyOrderId } from "@/components/ui/CopyOrderId";
 
 type TrackOrderResult = {
   transaction_id: string;
@@ -146,7 +147,7 @@ export default function TrackOrderPage() {
                       className="rounded-xl border border-slate-100 overflow-hidden bg-linear-to-b from-slate-50 to-white"
                     >
                       <div className="flex items-center justify-between flex-wrap gap-2 p-4 border-b border-slate-100">
-                        <span className="text-xs font-mono text-slate-500">#{order.transaction_id}</span>
+                        <CopyOrderId id={order.transaction_id} maxWidth="max-w-[130px] sm:max-w-[220px]" />
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${cfg.className}`}>
                           <Icon size={14} /> {cfg.label}
                         </span>
